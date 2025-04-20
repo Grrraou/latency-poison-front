@@ -8,7 +8,7 @@ export default function NotFound() {
         <div className="flex justify-center">
           <img alt="PoisonLatency" className="h-12 w-12" src="/icon.png" />
         </div>
-        <h1 className="text-4xl font-bold text-gray-900 tracking-tight">
+        <h1 className="text-4xl font-bold text-white-900 tracking-tight">
           Page Not Found
         </h1>
         <p className="text-base text-gray-500">

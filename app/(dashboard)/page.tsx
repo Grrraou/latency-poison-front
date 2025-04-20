@@ -10,9 +10,9 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-12 lg:gap-8">
             <div className="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left">
-              <h1 className="text-4xl font-bold text-gray-900 tracking-tight sm:text-5xl md:text-6xl">
-                Test Your Application
-                <span className="block text-orange-500">Under Real Conditions</span>
+              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+                <span className="text-orange-500">Test Your Application</span>
+                <span className="block text-white-900">Under Real Conditions</span>
               </h1>
               <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
                 PoisonLatency helps you build resilient applications by simulating real-world network conditions and error scenarios. Test your application's behavior under various latency and error conditions.
@@ -106,7 +106,7 @@ export default function HomePage() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="text-lg rounded-full"
+                  className="text-lg rounded-full bg-orange-50"
                 >
                   View the code
                   <ArrowRight className="ml-3 h-6 w-6" />

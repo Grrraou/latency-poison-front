@@ -32,7 +32,7 @@ function UserMenu() {
       <>
         <Link
           href="/pricing"
-          className="text-sm font-medium text-gray-700 hover:text-gray-900"
+          className="text-sm font-medium text-white-700 hover:text-orange-900"
         >
           Pricing
         </Link>
@@ -82,7 +82,7 @@ function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
         <Link href="/" className="flex items-center">
           <img src="/icon.png" alt="PoisonLatency" className="h-6 w-6" />
-          <span className="ml-2 text-xl font-semibold text-gray-900">PoisonLatency</span>
+          <span className="ml-2 text-xl font-semibold text-orange-500">PoisonLatency</span>
         </Link>
         <div className="flex items-center space-x-4">
           <Suspense fallback={<div className="h-9" />}>
