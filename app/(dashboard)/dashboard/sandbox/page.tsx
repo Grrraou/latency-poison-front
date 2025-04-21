@@ -5,24 +5,20 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
+import { Slider } from '@/components/ui/slider';
 import { Loader2, Beaker } from 'lucide-react';
 
 export default function SandboxPage() {
   const [url, setUrl] = useState('https://api.github.com');
-  const [failRate, setFailRate] = useState('0.5');
+  const [failRate, setFailRate] = useState(0.5);
   const [failCodes, setFailCodes] = useState('500,503');
-  const [minLatency, setMinLatency] = useState('100');
-  const [maxLatency, setMaxLatency] = useState('5000');
+  const [latencyRange, setLatencyRange] = useState([100, 5000]);
   const [response, setResponse] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [timing, setTiming] = useState<{
     total: string;
     fetch?: string;
-    simulatedLatency?: {
-      range: string;
-      actual: string;
-    };
   } | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -34,7 +30,7 @@ export default function SandboxPage() {
 
     try {
       const response = await fetch(
-        `/api/sandbox?url=${encodeURIComponent(url)}&failrate=${encodeURIComponent(failRate)}&failCodes=${encodeURIComponent(failCodes)}&minLatency=${encodeURIComponent(minLatency)}&maxLatency=${encodeURIComponent(maxLatency)}`,
+        `/api/sandbox?url=${encodeURIComponent(url)}&failrate=${encodeURIComponent(failRate)}&failCodes=${encodeURIComponent(failCodes)}&minLatency=${encodeURIComponent(latencyRange[0])}&maxLatency=${encodeURIComponent(latencyRange[1])}`,
         {
           cache: 'no-store',
           headers: {
@@ -55,11 +51,7 @@ export default function SandboxPage() {
       if (data.timing) {
         setTiming({
           total: `${data.timing.total}ms`,
-          fetch: data.timing.fetch ? `${data.timing.fetch}ms` : undefined,
-          simulatedLatency: data.timing.simulatedLatency ? {
-            range: `${data.timing.simulatedLatency.min}ms - ${data.timing.simulatedLatency.max}ms`,
-            actual: `${data.timing.simulatedLatency.actual}ms`
-          } : undefined
+          fetch: data.timing.fetch ? `${data.timing.fetch}ms` : undefined
         });
       }
 
@@ -106,17 +98,16 @@ export default function SandboxPage() {
             </div>
             <div>
               <Label htmlFor="failRate" className="mb-2">
-                Failure Rate (0-1)
+                Failure Rate: {failRate}
               </Label>
-              <Input
+              <Slider
                 id="failRate"
-                type="number"
-                min="0"
-                max="1"
-                step="0.1"
-                value={failRate}
-                onChange={(e) => setFailRate(e.target.value)}
-                required
+                min={0}
+                max={1}
+                step={0.1}
+                value={[failRate]}
+                onValueChange={(value) => setFailRate(value[0])}
+                className="w-full"
               />
             </div>
             <div>
@@ -132,29 +123,17 @@ export default function SandboxPage() {
               />
             </div>
             <div>
-              <Label htmlFor="minLatency" className="mb-2">
-                Minimum Latency (ms)
+              <Label htmlFor="latency" className="mb-2">
+                Latency Range: {latencyRange[0]}ms - {latencyRange[1]}ms
               </Label>
-              <Input
-                id="minLatency"
-                type="number"
-                min="0"
-                value={minLatency}
-                onChange={(e) => setMinLatency(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <Label htmlFor="maxLatency" className="mb-2">
-                Maximum Latency (ms)
-              </Label>
-              <Input
-                id="maxLatency"
-                type="number"
-                min="0"
-                value={maxLatency}
-                onChange={(e) => setMaxLatency(e.target.value)}
-                required
+              <Slider
+                id="latency"
+                min={0}
+                max={10000}
+                step={100}
+                value={latencyRange}
+                onValueChange={setLatencyRange}
+                className="w-full"
               />
             </div>
             {error && (
