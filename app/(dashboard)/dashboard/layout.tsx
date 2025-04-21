@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Users, Settings, Shield, Activity, Menu, Beaker } from 'lucide-react';
+import { Users, Settings, Shield, Activity, Menu, Beaker, Link as LinkIcon } from 'lucide-react';
 
 export default function DashboardLayout({
   children
@@ -18,6 +18,7 @@ export default function DashboardLayout({
     { href: '/dashboard', icon: Users, label: 'Team' },
     { href: '/dashboard/general', icon: Settings, label: 'General' },
     { href: '/dashboard/sandbox', icon: Beaker, label: 'Sandbox' },
+    { href: '/dashboard/endpoints', icon: LinkIcon, label: 'Endpoints' },
     { href: '/dashboard/activity', icon: Activity, label: 'Activity' },
     { href: '/dashboard/security', icon: Shield, label: 'Security' }
   ];

@@ -6,7 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
-import { Loader2, Beaker } from 'lucide-react';
+import { Loader2, Beaker, Link as LinkIcon } from 'lucide-react';
+import Link from 'next/link';
 
 export default function SandboxPage() {
   const [url, setUrl] = useState('https://api.github.com');
@@ -74,9 +75,17 @@ export default function SandboxPage() {
 
   return (
     <section className="flex-1 p-4 lg:p-8">
-      <h1 className="text-lg lg:text-2xl font-medium text-white-900 mb-6">
-        Sandbox Testing
-      </h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-lg lg:text-2xl font-medium text-white-900">
+          Sandbox Testing
+        </h1>
+        <Link href="/dashboard/endpoints">
+          <Button variant="outline" className="text-orange-500 hover:text-orange-600">
+            <LinkIcon className="mr-2 h-4 w-4" />
+            View Endpoints
+          </Button>
+        </Link>
+      </div>
 
       <Card>
         <CardHeader>
