@@ -3,6 +3,8 @@
 A SaaS application built with **Next.js** featuring authentication, Stripe integration for payments, and a dashboard for logged-in users.
 Based on https://github.com/nextjs/saas-starter
 
+this project requiert a running instance of https://github.com/Grrraou/latency-poison-go-api
+
 ## Tech Stack
 
 - **Framework**: [Next.js](https://nextjs.org/)
