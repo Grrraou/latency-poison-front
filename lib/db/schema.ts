@@ -5,6 +5,8 @@ import {
   text,
   timestamp,
   integer,
+  boolean,
+  real,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
@@ -68,15 +70,65 @@ export const invitations = pgTable('invitations', {
   status: varchar('status', { length: 20 }).notNull().default('pending'),
 });
 
+export const collections = pgTable('collections', {
+  id: serial('id').primaryKey(),
+  name: varchar('name', { length: 100 }).notNull(),
+  url: varchar('url', { length: 255 }).notNull(),
+  userId: integer('user_id')
+    .notNull()
+    .references(() => users.id),
+  teamId: integer('team_id')
+    .references(() => teams.id),
+  active: boolean('active').notNull().default(true),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+});
+
+export const endpoints = pgTable('endpoints', {
+  id: varchar('id', { length: 36 }).primaryKey(),
+  collectionId: integer('collection_id')
+    .notNull()
+    .references(() => collections.id),
+  path: varchar('path', { length: 255 }).notNull(),
+  failRate: real('fail_rate').notNull(),
+  failStatus: varchar('fail_status', { length: 50 }).notNull(),
+  minLatency: integer('min_latency').notNull(),
+  maxLatency: integer('max_latency').notNull(),
+  active: boolean('active').notNull().default(true),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+});
+
+export const collectionsRelations = relations(collections, ({ one, many }) => ({
+  user: one(users, {
+    fields: [collections.userId],
+    references: [users.id],
+  }),
+  team: one(teams, {
+    fields: [collections.teamId],
+    references: [teams.id],
+  }),
+  endpoints: many(endpoints),
+}));
+
+export const endpointsRelations = relations(endpoints, ({ one }) => ({
+  collection: one(collections, {
+    fields: [endpoints.collectionId],
+    references: [collections.id],
+  }),
+}));
+
 export const teamsRelations = relations(teams, ({ many }) => ({
   teamMembers: many(teamMembers),
   activityLogs: many(activityLogs),
   invitations: many(invitations),
+  collections: many(collections),
 }));
 
 export const usersRelations = relations(users, ({ many }) => ({
   teamMembers: many(teamMembers),
   invitationsSent: many(invitations),
+  collections: many(collections),
 }));
 
 export const invitationsRelations = relations(invitations, ({ one }) => ({

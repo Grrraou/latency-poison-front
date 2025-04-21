@@ -44,6 +44,8 @@
     "tailwindcss-animate": "^1.0.7",
     "tailwindcss-react-aria-components": "2.0.0",
     "typescript": "^5.8.2",
+    "uuid": "^9.0.1",
+    "@types/uuid": "^9.0.8",
     "zod": "^3.24.2"
   }
 }

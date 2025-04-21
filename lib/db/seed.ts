@@ -1,7 +1,8 @@
 import { stripe } from '../payments/stripe';
 import { db } from './drizzle';
-import { users, teams, teamMembers } from './schema';
+import { users, teams, teamMembers, collections, endpoints } from './schema';
 import { hashPassword } from '@/lib/auth/session';
+import { v4 as uuidv4 } from 'uuid';
 
 async function createStripeProducts() {
   console.log('Creating Stripe products and prices...');
@@ -69,6 +70,36 @@ async function seed() {
     userId: user.id,
     role: 'owner',
   });
+
+  console.log('Team and team member created.');
+
+  // Create a collection
+  const [collection] = await db
+    .insert(collections)
+    .values({
+      name: 'GitHub API',
+      url: 'https://api.github.com',
+      userId: user.id,
+      teamId: team.id,
+      active: true,
+    })
+    .returning();
+
+  console.log('Collection created.');
+
+  // Create an endpoint for the collection
+  await db.insert(endpoints).values({
+    id: uuidv4(),
+    collectionId: collection.id,
+    path: '/',
+    failRate: 0.5,
+    failStatus: '500,503',
+    minLatency: 0,
+    maxLatency: 5000,
+    active: true,
+  });
+
+  console.log('Endpoint created.');
 
   await createStripeProducts();
 }
